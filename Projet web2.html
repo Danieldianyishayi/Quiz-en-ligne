@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz en ligne</title>
+    <link rel="stylesheet" href="Projet web2.css">
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Quiz en ligne</h1>
+
+    <div id="question">Question ici</div>
+
+    <div id="answers">
+        <button class="btn" onclick="checkAnswer(0)"></button>
+        <button class="btn" onclick="checkAnswer(1)"></button>
+        <button class="btn" onclick="checkAnswer(2)"></button>
+        <button class="btn" onclick="checkAnswer(3)"></button>
+    </div>
+
+    <p id="result"></p>
+
+</div>
+<script>
+    let quiz = [
+    {
+        question: "Quelle est la capitale de la France ?",
+        answers: ["Paris", "Londres", "Rome", "Berlin"],
+        correct: 0
+    },
+    {
+        question: "2 + 2 = ?",
+        answers: ["3", "4", "5", "6"],
+        correct: 1
+    },
+    {
+        question: "Quelle est le Langage du web ?",
+        answers: ["HTML", "Python", "C++", "Java"],
+        correct: 0
+    },
+    {
+        question: "Quelle est la capitale de la RDC ?",
+        answers: ["Madrid", "Dakar", "Londre", "Kinshasa"],
+        correct: 3
+    },
+    {
+        question: "L'independance du congo ?",
+        answers: ["1840", "1960", "1986", "1956"],
+        correct: 1
+    },
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+
+    if (current >= quiz.length) {
+        showResult();
+        return;
+    }
+
+    document.getElementById("question").innerText =
+        quiz[current].question;
+
+    let buttons = document.getElementsByClassName("btn");
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].innerText =
+            quiz[current].answers[i];
+    }
+
+    document.getElementById("result").innerText = "";
+}
+
+function checkAnswer(i) {
+
+    if (i === quiz[current].correct) {
+        document.getElementById("result").innerText = "Bonne réponse ";
+        score++;
+    } else {
+        document.getElementById("result").innerText = "Mauvaise réponse ";
+    }
+
+    setTimeout(() => {
+        current++;
+        loadQuestion();
+    }, 1000);
+}
+
+
+function showResult() {
+
+    document.getElementById("question").innerText =
+        "Quiz terminé";
+
+    document.getElementById("answers").innerHTML = "";
+
+    document.getElementById("result").innerHTML =
+        "Score : " + score + " / " + quiz.length +
+        "<br><br><button onclick='restartQuiz()'>Recommencer</button>";
+}
+
+
+function restartQuiz() {
+
+    current = 0;
+    score = 0;
+
+    // remettre les boutons
+    document.getElementById("answers").innerHTML = `
+        <button class="btn" onclick="checkAnswer(0)"></button>
+        <button class="btn" onclick="checkAnswer(1)"></button>
+        <button class="btn" onclick="checkAnswer(2)"></button>
+        <button class="btn" onclick="checkAnswer(3)"></button>
+    `;
+
+    loadQuestion();
+}
+
+
+window.onload = loadQuestion;
+</script>
+
+</body>
+</html>
